@@ -61,10 +61,6 @@ app.get('/messages', (req, res) => {
 
 app.use(authenRouter);
 
-app.get('/error', (req, res) => {
-  res.render('errors/error_page', { error: { message: 'not found', statusCode: 404 }})
-})
-
 app.get('/', (req, res) => res.send('Hello World!'));
 
 // error handler
