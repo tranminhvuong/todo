@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Error Page</title>
+
+  <!-- Font Icon -->
+  <link rel="stylesheet" href="/fonts/material-icon/css/material-design-iconic-font.min.css">
+
+  <!-- Main css -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="main-wrapper">
+    <div class="preloader">
+      <div class="error-box">
+        <div class="error-body text-center">
+          <h1 class="error-title"><%= error.statusCode %></h1>
+          <h3 class="text-uppercase error-subtitle"><%= error.message %></h3>
+          <p class="text-muted mb-4 mt-4">YOU SEEM TO BE TRYING TO FIND HIS WAY HOME</p>
+          <a href="/" class="btn btn-info btn-rounded waves-effect waves-light mb-4">Back to home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
