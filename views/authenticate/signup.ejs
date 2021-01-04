@@ -35,7 +35,7 @@
               
               <div class="form-group">
                 <label for="email"><i class="zmdi zmdi-email"></i></label>
-                <input type="email" name="email" id="email" required placeholder="Your Email" class="is-invalid" value="<%= user.email || '' %>" <% if (errors.email) { %>
+                <input type="email" name="email" id="email" required placeholder="Your Email" value="<%= user.email || '' %>" <% if (errors.email) { %>
                   class="is-invalid" /> </div><div class="invalid-feedback"><%= errors.email[0] %></div>
                 <% } else { %>
                   /> </div>
