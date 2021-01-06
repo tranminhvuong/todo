@@ -2,31 +2,34 @@ import {
   BaseEntity,
   Column,
   Entity,
-  Like,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { IsDate, isPhoneNumber, Length } from 'class-validator'
+import bcrypt from 'bcrypt';
+import { IsDate, IsNotEmpty, isPhoneNumber, Length, ValidatePromise } from 'class-validator';
 @Entity('users')
 export class User extends BaseEntity{
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  @Length(5, 100)
+  @IsNotEmpty()
+  @Length(6, 20)
   userName: string;
 
   @Column()
-  @Length(5, 100)
+  @IsNotEmpty()
+  @Length(6, 20)
   passwordDigest: string;
 
   @Column()
   confirmCode: string;
 
   @Column()
+  @IsNotEmpty()
+  @Length(6, 20)
   phoneNumber: string;
 
   @Column()
-  @Length(5,100)
   fullName: string;
 
   @Column()
@@ -36,7 +39,6 @@ export class User extends BaseEntity{
   email: string;
 
   @Column()
-  @IsDate()
   birthDay: string;
 
   @Column()
@@ -51,11 +53,11 @@ export class User extends BaseEntity{
   @Column()
   resetToken: string;
 
-  static findAccountByIdMailPhone(text: string) {
+  static findAccountByLoginId(email: string, phone: string, userName: string) {
     return this.createQueryBuilder('users')
-      .where('users.email = :text', {text})
-      .orWhere('users.phoneNumber = :text', {text})
-      .orWhere('users.id = :text', {text})
+      .where('users.email = :email', {email})
+      .orWhere('users.phoneNumber = :phone', {phone})
+      .orWhere('users.userName = :userName', {userName})
       .getOne();
   };
 
@@ -76,4 +78,9 @@ export class User extends BaseEntity{
       .where('users.resetToken = :text', {text})
       .getOne();
   };
+
+  public async verifyPassword(password: string) {
+    const check = await bcrypt.compare(password, this.passwordDigest);
+    return check;
+  }
 }

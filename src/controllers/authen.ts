@@ -1,9 +1,10 @@
-import { Request, Response} from 'express';
+import { NextFunction, Request, Response} from 'express';
 import { User } from '../db/models/user';
 import bcrypt from 'bcrypt';
 import { uniqueNamesGenerator, Config, adjectives, colors, animals } from 'unique-names-generator';
 import { sendMail } from '../../utils/mailer/sender';
 import { randToken } from '../../utils/random/random_code';
+import passport from 'passport';
 
 export const getLogin = async (req: Request, res: Response) => {
   try {
@@ -28,9 +29,11 @@ export const getSignup = async (req: any, res: Response) => {
   }
 }
 
-export const postLogin = async (req: Request, res: Response) => {
-  res.json(req.body)
-}
+export const postLogin = passport.authenticate('local',
+  { successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+  });
 
 export const postSignup = async (req: Request, res: Response) => {
   try {

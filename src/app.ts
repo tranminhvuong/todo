@@ -6,6 +6,8 @@ import path from 'path';
 import session from 'express-session';
 import unless from 'express-unless';
 import url from 'url';
+import passport from 'passport';
+import flash from 'express-flash';
 
 import { connect } from './db/db'
 import { User } from "./db/models/user";
@@ -21,7 +23,9 @@ console.log('db connected');
 
 const app = express();
 app.use(session({
-  cookie: {},
+  cookie: {
+    maxAge: 720000
+  },
   resave: true,
   saveUninitialized: false,
   secret: 'my key',
@@ -50,9 +54,18 @@ app.set('views', path.join(__dirname, '/../views'));
 
 // App setting static assets
 app.use(express.static(path.join(__dirname + '/../public')));
+app.use(flash());
 
-import { newUser } from './controllers/user';
-app.get('/new_user', newUser);
+app.use(passport.initialize())
+app.use(passport.session())
+passport.serializeUser((user: any, done: any) => {
+  done(null, user)
+})
+passport.deserializeUser((user: any, done: any) => {
+  done(null, user)
+})
+
+import './config/passport';
 
 // route for chat
 app.get('/messages', (req, res) => {
