@@ -56,6 +56,13 @@ app.set('views', path.join(__dirname, '/../views'));
 app.use(express.static(path.join(__dirname + '/../public')));
 app.use(flash());
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Accept, Authorization, Origin');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  next();
+});
+
 app.use(passport.initialize())
 app.use(passport.session())
 passport.serializeUser((user: any, done: any) => {

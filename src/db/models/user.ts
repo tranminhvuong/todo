@@ -51,7 +51,16 @@ export class User extends BaseEntity{
   isActive: boolean;
 
   @Column()
+  avatarUrl: string;
+
+  @Column()
   resetToken: string;
+
+  static findAccountByEmail(email: string) {
+    return this.createQueryBuilder('users')
+      .where('users.email = :email', {email})
+      .getOne();
+  }
 
   static findAccountByLoginId(email: string, phone: string, userName: string) {
     return this.createQueryBuilder('users')

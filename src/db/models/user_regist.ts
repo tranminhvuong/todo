@@ -36,11 +36,9 @@ export class UserRegist extends BaseEntity{
   @Column()
   agreeTerm: string;
 
-  static findAccountByIdMailPhone(text: string) {
+  static findAccountByMail(text: string) {
     return this.createQueryBuilder('users')
       .where('users.email = :text', {text})
-      .orWhere('users.phoneNumber = :text', {text})
-      .orWhere('users.id = :text', {text})
       .getOne();
   };
 }
