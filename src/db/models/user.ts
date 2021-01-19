@@ -51,6 +51,9 @@ export class User extends BaseEntity{
   isActive: boolean;
 
   @Column()
+  avatarUrl: string;
+
+  @Column()
   resetToken: string;
 
   static findAccountByEmail(email: string) {

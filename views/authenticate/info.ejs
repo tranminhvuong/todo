@@ -26,7 +26,7 @@
       <div class="container">
         <div class="signin-content">
           <div class="avatar-image image">
-            <figure><img src="/images/signin-image.jpg" alt="sing up image"></figure>
+            <figure><img id="img-ava" src="/images/signin-image.jpg" alt="sing up image"></figure>
             <div class="signup-image-link">
               <p>Update Your Avatar</p>
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -90,7 +90,7 @@
           <div id="cameraControls" class="cameraControls">
             <a href="#" id="exit-app" title="Exit App" class="d-none"><i class="material-icons">exit_to_app</i></a>
             <a href="#" id="take-photo" title="Take Photo"><i class="material-icons">camera_alt</i></a>
-            <a href="#" id="download-photo" download="selfie.png" target="_blank" title="Save Photo" class="d-none"><i class="material-icons">file_download</i></a>  
+            <i id="download-photo" class="material-icons d-none">file_download</i>  
             <a href="#" id="resume-camera"  title="Resume Camera" class="d-none"><i class="material-icons">camera_front</i></a>
           </div>
         </div>
@@ -101,6 +101,7 @@
   <!-- JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="/js/axios.min.js"></script>
   <script src="/js/webcam.js"></script>
 </body>
 
