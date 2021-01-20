@@ -5,16 +5,14 @@ import dotenv from 'dotenv';
 import path from 'path';
 import session from 'express-session';
 import unless from 'express-unless';
-import url from 'url';
 import passport from 'passport';
 import flash from 'express-flash';
-
-import { connect } from './db/db'
-import { User } from "./db/models/user";
-import authenRouter from './routers/authen';
-import { getProvinces } from './apis/address';
-import {logAccess} from '../utils/logs/access_log';
+import { connect } from './db/db';
+import url from 'url';
+import { logAccess } from '../utils/logs/access_log';
 import { staticAsset } from '../utils/constant';
+import authenRouter from './routers/authen';
+import cookieParser from 'cookie-parser';
 import { logErrors, errorHandler, clientErrorHandler } from '../utils/handleError/handle';
 dotenv.config();
 
@@ -40,6 +38,8 @@ app.use(logAccess.unless((req: any) => {
   const ext = url.parse(req.originalUrl).pathname.substr(0, 3);
   return staticAsset.some(item => item.indexOf(ext) >= 0);
 }));
+
+app.use(cookieParser());
 
 app.use(bodyParser.json({
   limit: '50mb',
@@ -73,6 +73,7 @@ passport.deserializeUser((user: any, done: any) => {
 })
 
 import './config/passport';
+import userRoutes from './routers/user';
 
 // route for chat
 app.get('/messages', (req, res) => {
@@ -80,6 +81,7 @@ app.get('/messages', (req, res) => {
 });
 
 app.use(authenRouter);
+app.use('/users', userRoutes)
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
@@ -91,5 +93,12 @@ app.use((req, res, next) => {
     message: 'page not found'
   } });
 });
+
+// Log access
+logAccess.unless = unless;
+app.use(logAccess.unless((req: any) => {
+  const ext = url.parse(req.originalUrl).pathname.substr(0, 3);
+  return staticAsset.some(item => item.indexOf(ext) >= 0);
+}));
 
 export { app };
