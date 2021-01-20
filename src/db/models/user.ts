@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import bcrypt from 'bcrypt';
-import { IsDate, IsNotEmpty, isPhoneNumber, Length, ValidatePromise } from 'class-validator';
+import { IsISO8601, IsNotEmpty, Length } from 'class-validator';
 @Entity('users')
 export class User extends BaseEntity{
   @PrimaryGeneratedColumn()
@@ -38,7 +38,8 @@ export class User extends BaseEntity{
   @Column()
   email: string;
 
-  @Column()
+  @Column({type: 'date'})
+  @IsISO8601({strict: true})
   birthDay: string;
 
   @Column()
@@ -55,6 +56,9 @@ export class User extends BaseEntity{
 
   @Column()
   resetToken: string;
+
+  @Column()
+  districtId: number;
 
   static findAccountByEmail(email: string) {
     return this.createQueryBuilder('users')

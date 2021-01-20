@@ -26,7 +26,7 @@
       <div class="container">
         <div class="signin-content">
           <div class="avatar-image image">
-            <figure><img id="img-ava" src="/images/signin-image.jpg" alt="sing up image"></figure>
+            <figure><img id="img-ava" src="<%= user.avatarUrl %>" alt="sing up image"></figure>
             <div class="signup-image-link">
               <p>Update Your Avatar</p>
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -39,31 +39,38 @@
 
           <div class="profile-info">
             <h2 class="form-title">Your information</h2>
-            <form method="POST" class="register-form" id="login-form" action="/login">
+            <form method="POST" class="register-form" id="login-form" action="/users/user_info">
               <div class="form-group">
-                <label for="your_name"><i class="zmdi zmdi-cake"></i></label>
-                <input class="form-control" type="date" value="2011-08-19" id="example-date-input">
+                <label for="your_name"><i class="zmdi zmdi-account"></i></label>
+                <input class="form-control" name="full_name" type="text" id="your_name" placeholder="Your name" value="<%= user.fullName %>">
+              </div>
+              <div class="form-group">
+                <label for="example-date-input"><i class="zmdi zmdi-cake"></i></label>
+                <input class="form-control" name="birth_day" type="date" value="<%= user.birthDay %>" id="example-date-input">
               </div>
               <div class="form-group">
                 <label for="provinces"><i class="zmdi zmdi-gps-dot"></i></label>
                 <select class="form-control" id="provinces" name="province">
-                  <option value="" disabled selected>Your province</option>
-                  <option>QUang Nam</option>
-                  <option>Da Nang</option>
-                  <option>Ha Noi</option>
-                  <option>Ho Chi Minh</option>
-                  <option>Thai Binh</option>
+                  <% if (user.district) { %>
+                    <option value="<%= user.district.province.id %>" disabled selected><%= user.district.province.name %></option>
+                  <% } else { %>
+                    <option value="" disabled selected>Your district</option>
+                  <% } %>
+                  <% if (provinces && provinces.length) { %>
+                    <% for (var item of provinces) { %>
+                  <option value="<%= item.id %>"><%= item.name %></option>
+                    <% } %>
+                  <% } %>
                 </select>
               </div>
               <div class="form-group">
                 <label for="districts"><i class="zmdi zmdi-gps-dot"></i></label>
                 <select class="form-control" id="districts" name="district">
-                  <option value="" disabled selected>Your district</option>
-                  <option>QUang Nam</option>
-                  <option>Da Nang</option>
-                  <option>Ha Noi</option>
-                  <option>Ho Chi Minh</option>
-                  <option>Thai Binh</option>
+                  <% if (user.district) { %>
+                    <option value="<%= user.district.id %>" disabled selected><%= user.district.name %></option>
+                  <% } else { %>
+                    <option value="" disabled selected>Your district</option>
+                  <% } %>
                 </select>
               </div>
               <div class="form-group form-button">
@@ -88,10 +95,10 @@
             <audio id="snapSound" src="/audio/snap.wav" preload = "auto"></audio>
           </div>
           <div id="cameraControls" class="cameraControls">
-            <a href="#" id="exit-app" title="Exit App" class="d-none"><i class="material-icons">exit_to_app</i></a>
-            <a href="#" id="take-photo" title="Take Photo"><i class="material-icons">camera_alt</i></a>
+            <a href="#" id="exit-app" title="Exit App" class="d-none"><i class="material-icons"></i></a>
+            <a href="#" id="take-photo" title="Take Photo"><i class="material-icons"></i></a>
             <i id="download-photo" class="material-icons d-none">file_download</i>  
-            <a href="#" id="resume-camera"  title="Resume Camera" class="d-none"><i class="material-icons">camera_front</i></a>
+            <a href="#" id="resume-camera"  title="Resume Camera" class="d-none"><i class="material-icons"></i></a>
           </div>
         </div>
       </div>
@@ -103,6 +110,19 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script src="/js/axios.min.js"></script>
   <script src="/js/webcam.js"></script>
+  <script>
+    var provins = <%- JSON.stringify(provinces) %>;
+    $('#provinces').on('change', function() {
+      $('#districts').find('option')
+      .remove()
+      .end();
+      $('#districts').append(new Option('Your district', '', true));
+      var choised = provins.find(item => item.id == $(this).val());
+      for (const dis of choised.districts) {
+        $('#districts').append(new Option(dis.name, dis.id));
+      }
+    });
+  </script>
 </body>
 
 </html>

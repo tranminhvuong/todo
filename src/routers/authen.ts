@@ -1,7 +1,7 @@
 import {
   getLogin, getSignup,
   postLogin, postSignup,
-  getInputInfo, getConfirmationCode,
+  getConfirmationCode,
   waitActive,
   activeAccount
 } from '../controllers/authen';
@@ -14,7 +14,6 @@ authenRouter.get('/login', getLogin)
   .post('/login', loginValidate, postLogin)
   .get('/sign-up', getSignup)
   .post('/sign-up', signUpValidate, postSignup)
-  .get('/your-profile', getInputInfo)
   .get('/confirm-account', getConfirmationCode)
   .get('/wait-active', waitActive)
   .get('/confirm', activeAccount);
