@@ -2,8 +2,12 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+
 import bcrypt from 'bcrypt';
 import { IsISO8601, IsNotEmpty, Length } from 'class-validator';
 @Entity('users')
@@ -59,6 +63,42 @@ export class User extends BaseEntity{
 
   @Column()
   districtId: number;
+
+  // friend
+  @OneToMany(() => User, (user) => user.friends)
+  @JoinTable({
+    name: 'friends',
+    joinColumn: {
+      name: 'friend_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id'
+    }
+  })
+  frienders: Promise<User[]>
+
+  @ManyToMany(() => User, (user) => user.frienders)
+  friends: Promise<User[]>;
+
+  // follow
+  @OneToMany(() => User, (user) => user.followings)
+  @JoinTable({
+    name: 'follows',
+    joinColumn: {
+      name: 'following_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id'
+    }
+  })
+  followers: Promise<User[]>
+
+  @ManyToMany(() => User, (user) => user.followers)
+  followings: Promise<User[]>;
 
   static findAccountByEmail(email: string) {
     return this.createQueryBuilder('users')
