@@ -1,0 +1,9 @@
+<script src="/js/socket.io.min.js"></script>
+<script>
+  const username = '<%= currentUser.userName %>';
+  const socket = io("http://localhost:5000?q=" + username);
+  function sendMsg() {
+    socket.emit("message", "HELLO WORLD");
+  }
+
+</script>

@@ -20,6 +20,7 @@ connect();
 console.log('db connected');
 
 const app = express();
+
 app.use(session({
   cookie: {
     maxAge: 720000
@@ -101,4 +102,11 @@ app.use(logAccess.unless((req: any) => {
   return staticAsset.some(item => item.indexOf(ext) >= 0);
 }));
 
-export { app };
+// tslint:disable-next-line:no-var-requires
+const http = require("http").Server(app);
+// tslint:disable-next-line:no-var-requires
+const io = require("socket.io")(http);
+import { connectServer } from '../utils/realtime/index'
+io.on("connection", connectServer);
+
+export { http };
